@@ -1,16 +1,6 @@
-/*
- * Sensor.h
- *
- * Created: 4/3/2024 10:40:19 AM
- *  Author: os
- */ 
-
 
 #ifndef SENSOR_H_
 #define SENSOR_H_
-
-
-
-
-
+void ADC_Init();
+int ADC_Read(char channel);
 #endif /* SENSOR_H_ */
