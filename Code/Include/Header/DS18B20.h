@@ -1,8 +1,19 @@
-#ifndef DS18B20_H_
-#define DS18B20_H_
-uint8_t reset();
-void writebit(uint8_t bit);
-uint8_t readbit();
-void writebyte(uint8_t byte);
-uint8_t readbyte();
-#endif /* DS18B20_H_ */
+#ifndef DS18B20_H
+#define DS18B20_H
+
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#define WIRE_PIN 1
+#define CONVERT_T 0x44
+#define RSCRATCHPAD 0xBE
+#define WSCRATCHPAD 0x4E
+#define SKIPROM 0xCC
+unsigned char reset(void);
+void writebit(unsigned char bit);
+unsigned char readbit(void);
+void writebyte(unsigned char byte);
+unsigned char readbyte(void);
+float readTemp(void);
+
+#endif // DS18B20_H

@@ -1,10 +1,8 @@
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#define WIRE_PIN 1
-uint8_t reset()
+#include "DS18B20.h"
+
+unsigned char reset()
 {
-	uint8_t re;
+	unsigned char re;
 	DDRA |= (1<<WIRE_PIN);
 	PORTA &= (1<<WIRE_PIN);
 	_delay_us(480);
@@ -15,7 +13,7 @@ uint8_t reset()
 	return re;
 }
 
-void writebit(uint8_t bit)
+void writebit(unsigned char bit)
 {
 	DDRA |= (1<<WIRE_PIN);
 	PORTA &= (1<<WIRE_PIN);
@@ -28,9 +26,9 @@ void writebit(uint8_t bit)
 	DDRA &= ~(1<<WIRE_PIN);
 }
 
-uint8_t readbit()
+unsigned char readbit()
 {
-	uint8_t bit = 0;
+	unsigned char bit = 0;
 	DDRA |= (1<<WIRE_PIN);
 	PORTA &= (1<<WIRE_PIN);
 	_delay_us(1);
@@ -42,7 +40,7 @@ uint8_t readbit()
 	return bit;
 }
 
-void writebyte(uint8_t byte)
+void writebyte(unsigned char byte)
 {
 	unsigned char i;
 	for(i = 0; i < 8; i++)
@@ -51,9 +49,9 @@ void writebyte(uint8_t byte)
 	}
 }
 
-uint8_t readbyte()
+unsigned char readbyte()
 {
-	uint8_t n = 0;
+	unsigned char n = 0;
 	unsigned char i;
 	for(i = 0; i < 8; i++)
 	{
@@ -61,3 +59,24 @@ uint8_t readbyte()
 	}
 	return n;
 }
+
+float readTemp()
+{
+	unsigned char iTempL;
+	unsigned char iTempH;
+	float ftemp = 0;
+	while(reset());
+	writebyte(SKIPROM);
+	writebyte(CONVERT_T);
+	while(!readbit());
+	while(reset());
+	writebyte(SKIPROM);
+	writebyte(RSCRATCHPAD);
+	
+	iTempL = readbyte();
+	iTempH = readbyte() ;
+	unsigned int temp = (iTempH << 8) | iTempL;
+	ftemp = temp * 0.0625;
+	return ftemp;
+}
+

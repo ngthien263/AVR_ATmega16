@@ -132,7 +132,7 @@
     <Compile Include="Include\Header\Sensor.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Include\Header\Timer.h">
+    <Compile Include="Include\Header\DS18B20.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Include\Src\ADC.c">
@@ -141,7 +141,7 @@
     <Compile Include="Include\Src\LCD.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Include\Src\Timer.c">
+    <Compile Include="Include\Src\DS18B20.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Include\Src\Sensor.c">
