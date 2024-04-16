@@ -1,43 +1,55 @@
 #include "DS18B20.h"
 
-unsigned char reset()
+uint8_t reset()
 {
-	unsigned char re;
+	uint8_t re;
 	DDRA |= (1<<WIRE_PIN);
-	PORTA &= (1<<WIRE_PIN);
+	PORTA &= ~(1<<WIRE_PIN);
 	_delay_us(480);
 	DDRA &= ~(1<<WIRE_PIN);
-	_delay_us(60);
-	re = PORTA & (1<<WIRE_PIN);
+	_delay_us(70);
+	re = PINA & (1<<WIRE_PIN);
 	_delay_us(420);
 	return re;
 }
 
-void writebit(unsigned char bit)
+void write1()
 {
 	DDRA |= (1<<WIRE_PIN);
-	PORTA &= (1<<WIRE_PIN);
-	_delay_us(1);
-	if (bit == 1)
-	{
-		DDRA &= ~(1<<WIRE_PIN);
-	}
-	_delay_us(60);
+	PORTA &= ~(1<<WIRE_PIN);
+	_delay_us(6);
 	DDRA &= ~(1<<WIRE_PIN);
+	_delay_us(64);
 }
 
-unsigned char readbit()
+void write0()
 {
-	unsigned char bit = 0;
 	DDRA |= (1<<WIRE_PIN);
-	PORTA &= (1<<WIRE_PIN);
-	_delay_us(1);
+	PORTA &= ~(1<<WIRE_PIN);
+	_delay_us(60);
 	DDRA &= ~(1<<WIRE_PIN);
-	_delay_us(14);
-	if (PORTA & (1<<WIRE_PIN))
-		bit = 1;
-	_delay_us(45);
-	return bit;
+	_delay_us(10);
+}
+
+void writebit(unsigned char bit)
+{
+	if(bit==1)
+	write1();
+	else
+	write0();
+}
+
+uint8_t readbit()
+{
+	uint8_t res;
+	DDRA |= (1<<WIRE_PIN);
+	PORTA &= ~(1<<WIRE_PIN);
+	_delay_us(6);
+	DDRA &= ~(1<<WIRE_PIN);
+	_delay_us(9);
+	res = PINA & (1<<WIRE_PIN);
+	_delay_us(55);
+	return res;
 }
 
 void writebyte(unsigned char byte)
@@ -45,14 +57,14 @@ void writebyte(unsigned char byte)
 	unsigned char i;
 	for(i = 0; i < 8; i++)
 	{
-		writebit(byte & (0x01<<i))
+		writebit((byte>>i) & 0x01);
 	}
 }
 
-unsigned char readbyte()
+uint8_t readbyte()
 {
-	unsigned char n = 0;
-	unsigned char i;
+	unsigned char i=8;
+	uint8_t n=0;
 	for(i = 0; i < 8; i++)
 	{
 		n |= (readbit()<<i);
@@ -60,23 +72,22 @@ unsigned char readbyte()
 	return n;
 }
 
-float readTemp()
+uint8_t readTemp()
 {
 	unsigned char iTempL;
 	unsigned char iTempH;
 	float ftemp = 0;
-	while(reset());
+	reset();
 	writebyte(SKIPROM);
 	writebyte(CONVERT_T);
 	while(!readbit());
-	while(reset());
+	reset();
 	writebyte(SKIPROM);
 	writebyte(RSCRATCHPAD);
 	
 	iTempL = readbyte();
 	iTempH = readbyte() ;
 	unsigned int temp = (iTempH << 8) | iTempL;
-	ftemp = temp * 0.0625;
+	ftemp = (uint8_t)(temp * 0.0625);
 	return ftemp;
 }
-

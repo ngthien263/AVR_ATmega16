@@ -123,19 +123,13 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Include\Header\ADC.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="Include\Header\LCD.h">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Include\Header\Sensor.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Include\Header\DS18B20.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Include\Src\ADC.c">
+    <Compile Include="Include\Header\mystr.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Include\Src\LCD.c">
@@ -144,7 +138,7 @@
     <Compile Include="Include\Src\DS18B20.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="Include\Src\Sensor.c">
+    <Compile Include="Include\Src\mystr.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
