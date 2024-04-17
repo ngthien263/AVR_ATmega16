@@ -28,7 +28,6 @@ void LCD_init() {
 	_delay_ms(1);
 	LCD_command(0x38); // 2 dong, 8 bit
 	LCD_command(0x0C); // Bat hien thi chu, tat con tro
-	LCD_command(0x01); //
 	_delay_ms(1);
 	
 }

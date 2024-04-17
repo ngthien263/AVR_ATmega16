@@ -2,13 +2,11 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-Include\Src\ADC.c
-
 Include\Src\LCD.c
 
-Include\Src\Timer.c
+Include\Src\DS18B20.c
 
-Include\Src\Sensor.c
+Include\Src\mystr.c
 
 main.c
 

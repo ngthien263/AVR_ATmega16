@@ -1,5 +1,5 @@
 #include "DS18B20.h"
-
+#include <mystr.h>
 uint8_t reset()
 {
 	uint8_t re;
@@ -34,9 +34,9 @@ void write0()
 void writebit(unsigned char bit)
 {
 	if(bit==1)
-	write1();
+		write1();
 	else
-	write0();
+		write0();
 }
 
 uint8_t readbit()
@@ -63,7 +63,7 @@ void writebyte(unsigned char byte)
 
 uint8_t readbyte()
 {
-	unsigned char i=8;
+	unsigned char i;
 	uint8_t n=0;
 	for(i = 0; i < 8; i++)
 	{
@@ -72,7 +72,7 @@ uint8_t readbyte()
 	return n;
 }
 
-uint8_t readTemp()
+int readTemp()
 {
 	unsigned char iTempL;
 	unsigned char iTempH;
@@ -87,7 +87,19 @@ uint8_t readTemp()
 	
 	iTempL = readbyte();
 	iTempH = readbyte() ;
-	unsigned int temp = (iTempH << 8) | iTempL;
-	ftemp = (uint8_t)(temp * 0.0625);
-	return ftemp;
+	int temp = (iTempH << 8) | iTempL;
+	return temp;
+}
+
+void int_part(char* intp_str)
+{
+	uint8_t intp = readTemp()>>4;
+	int_to_string(intp, intp_str);
+}
+
+void decimal_part(char* dcmp_str)
+{
+	uint8_t dcmp = readTemp() * 0x000F;
+	dcmp = dcmp * 10/16;
+	int_to_string(dcmp, dcmp_str);
 }
