@@ -99,7 +99,7 @@ void int_part(char* intp_str)
 
 void decimal_part(char* dcmp_str)
 {
-	uint8_t dcmp = readTemp() * 0x000F;
+	uint8_t dcmp = readTemp() & 0x000F;
 	dcmp = dcmp * 10/16;
 	int_to_string(dcmp, dcmp_str);
 }

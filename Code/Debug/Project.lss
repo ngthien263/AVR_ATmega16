@@ -3,29 +3,29 @@ Project.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000003fa  00000000  00000000  00000074  2**1
+  0 .text         000004d6  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         0000000a  00800060  000003fa  0000046e  2**0
+  1 .data         0000000a  00800060  000004d6  0000054a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .comment      00000030  00000000  00000000  00000478  2**0
+  2 .comment      00000030  00000000  00000000  00000554  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000004a8  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000584  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 000000f8  00000000  00000000  000004e4  2**0
+  4 .debug_aranges 00000110  00000000  00000000  000005c0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001344  00000000  00000000  000005dc  2**0
+  5 .debug_info   0000146a  00000000  00000000  000006d0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000a72  00000000  00000000  00001920  2**0
+  6 .debug_abbrev 00000aa2  00000000  00000000  00001b3a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000009d6  00000000  00000000  00002392  2**0
+  7 .debug_line   00000acc  00000000  00000000  000025dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000208  00000000  00000000  00002d68  2**2
+  8 .debug_frame  0000025c  00000000  00000000  000030a8  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000004a0  00000000  00000000  00002f70  2**0
+  9 .debug_str    000004ca  00000000  00000000  00003304  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000b93  00000000  00000000  00003410  2**0
+ 10 .debug_loc    00000f16  00000000  00000000  000037ce  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000000b8  00000000  00000000  00003fa3  2**0
+ 11 .debug_ranges 000000e8  00000000  00000000  000046e4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -65,16 +65,16 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	ea ef       	ldi	r30, 0xFA	; 250
-  68:	f3 e0       	ldi	r31, 0x03	; 3
+  66:	e6 ed       	ldi	r30, 0xD6	; 214
+  68:	f4 e0       	ldi	r31, 0x04	; 4
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
   6e:	0d 92       	st	X+, r0
   70:	aa 36       	cpi	r26, 0x6A	; 106
   72:	b1 07       	cpc	r27, r17
   74:	d9 f7       	brne	.-10     	; 0x6c <__do_copy_data+0xc>
-  76:	0e 94 cb 01 	call	0x396	; 0x396 <main>
-  7a:	0c 94 fb 01 	jmp	0x3f6	; 0x3f6 <_exit>
+  76:	0e 94 f8 01 	call	0x3f0	; 0x3f0 <main>
+  7a:	0c 94 69 02 	jmp	0x4d2	; 0x4d2 <_exit>
 
 0000007e <__bad_interrupt>:
   7e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -518,234 +518,414 @@ void int_part(char* intp_str)
  2c6:	95 95       	asr	r25
  2c8:	87 95       	ror	r24
 	int_to_string(intp, intp_str);
- 2ca:	be 01       	movw	r22, r28
- 2cc:	0e 94 97 01 	call	0x32e	; 0x32e <int_to_string>
+ 2ca:	68 2f       	mov	r22, r24
+ 2cc:	70 e0       	ldi	r23, 0x00	; 0
+ 2ce:	80 e0       	ldi	r24, 0x00	; 0
+ 2d0:	90 e0       	ldi	r25, 0x00	; 0
+ 2d2:	ae 01       	movw	r20, r28
+ 2d4:	0e 94 b3 01 	call	0x366	; 0x366 <int_to_string>
 }
- 2d0:	df 91       	pop	r29
- 2d2:	cf 91       	pop	r28
- 2d4:	08 95       	ret
+ 2d8:	df 91       	pop	r29
+ 2da:	cf 91       	pop	r28
+ 2dc:	08 95       	ret
 
-000002d6 <decimal_part>:
+000002de <decimal_part>:
 
 void decimal_part(char* dcmp_str)
 {
- 2d6:	cf 93       	push	r28
- 2d8:	df 93       	push	r29
- 2da:	ec 01       	movw	r28, r24
-	uint8_t dcmp = readTemp() * 0x000F;
- 2dc:	0e 94 38 01 	call	0x270	; 0x270 <readTemp>
- 2e0:	98 2f       	mov	r25, r24
- 2e2:	99 0f       	add	r25, r25
- 2e4:	89 0f       	add	r24, r25
- 2e6:	98 2f       	mov	r25, r24
- 2e8:	99 0f       	add	r25, r25
- 2ea:	99 0f       	add	r25, r25
- 2ec:	89 0f       	add	r24, r25
+ 2de:	cf 93       	push	r28
+ 2e0:	df 93       	push	r29
+ 2e2:	ec 01       	movw	r28, r24
+	uint8_t dcmp = readTemp() & 0x000F;
+ 2e4:	0e 94 38 01 	call	0x270	; 0x270 <readTemp>
+ 2e8:	8f 70       	andi	r24, 0x0F	; 15
 	dcmp = dcmp * 10/16;
- 2ee:	90 e0       	ldi	r25, 0x00	; 0
- 2f0:	9c 01       	movw	r18, r24
- 2f2:	22 0f       	add	r18, r18
- 2f4:	33 1f       	adc	r19, r19
+ 2ea:	90 e0       	ldi	r25, 0x00	; 0
+ 2ec:	9c 01       	movw	r18, r24
+ 2ee:	22 0f       	add	r18, r18
+ 2f0:	33 1f       	adc	r19, r19
+ 2f2:	88 0f       	add	r24, r24
+ 2f4:	99 1f       	adc	r25, r25
  2f6:	88 0f       	add	r24, r24
  2f8:	99 1f       	adc	r25, r25
  2fa:	88 0f       	add	r24, r24
  2fc:	99 1f       	adc	r25, r25
- 2fe:	88 0f       	add	r24, r24
- 300:	99 1f       	adc	r25, r25
- 302:	82 0f       	add	r24, r18
- 304:	93 1f       	adc	r25, r19
- 306:	9c 01       	movw	r18, r24
- 308:	99 23       	and	r25, r25
- 30a:	14 f4       	brge	.+4      	; 0x310 <decimal_part+0x3a>
- 30c:	21 5f       	subi	r18, 0xF1	; 241
- 30e:	3f 4f       	sbci	r19, 0xFF	; 255
- 310:	c9 01       	movw	r24, r18
- 312:	95 95       	asr	r25
- 314:	87 95       	ror	r24
- 316:	95 95       	asr	r25
- 318:	87 95       	ror	r24
- 31a:	95 95       	asr	r25
- 31c:	87 95       	ror	r24
- 31e:	95 95       	asr	r25
- 320:	87 95       	ror	r24
+ 2fe:	82 0f       	add	r24, r18
+ 300:	93 1f       	adc	r25, r19
+ 302:	bc 01       	movw	r22, r24
+ 304:	99 23       	and	r25, r25
+ 306:	14 f4       	brge	.+4      	; 0x30c <decimal_part+0x2e>
+ 308:	61 5f       	subi	r22, 0xF1	; 241
+ 30a:	7f 4f       	sbci	r23, 0xFF	; 255
+ 30c:	75 95       	asr	r23
+ 30e:	67 95       	ror	r22
+ 310:	75 95       	asr	r23
+ 312:	67 95       	ror	r22
+ 314:	75 95       	asr	r23
+ 316:	67 95       	ror	r22
+ 318:	75 95       	asr	r23
+ 31a:	67 95       	ror	r22
 	int_to_string(dcmp, dcmp_str);
- 322:	be 01       	movw	r22, r28
- 324:	0e 94 97 01 	call	0x32e	; 0x32e <int_to_string>
+ 31c:	70 e0       	ldi	r23, 0x00	; 0
+ 31e:	80 e0       	ldi	r24, 0x00	; 0
+ 320:	90 e0       	ldi	r25, 0x00	; 0
+ 322:	ae 01       	movw	r20, r28
+ 324:	0e 94 b3 01 	call	0x366	; 0x366 <int_to_string>
  328:	df 91       	pop	r29
  32a:	cf 91       	pop	r28
  32c:	08 95       	ret
 
-0000032e <int_to_string>:
-#include <avr/io.h>
-void int_to_string(uint8_t n, char *str)
-{
-	unsigned char i = 0;
- 32e:	20 e0       	ldi	r18, 0x00	; 0
-	while (n!= 0)
- 330:	19 c0       	rjmp	.+50     	; 0x364 <int_to_string+0x36>
+0000032e <reverse>:
 	{
-		int digit = n%10;
- 332:	3d ec       	ldi	r19, 0xCD	; 205
- 334:	83 9f       	mul	r24, r19
- 336:	31 2d       	mov	r19, r1
- 338:	11 24       	eor	r1, r1
- 33a:	93 2f       	mov	r25, r19
- 33c:	96 95       	lsr	r25
- 33e:	96 95       	lsr	r25
- 340:	96 95       	lsr	r25
- 342:	99 0f       	add	r25, r25
- 344:	49 2f       	mov	r20, r25
- 346:	44 0f       	add	r20, r20
- 348:	44 0f       	add	r20, r20
- 34a:	94 0f       	add	r25, r20
- 34c:	89 1b       	sub	r24, r25
- 34e:	98 2f       	mov	r25, r24
-		str[i] = digit + '0';
- 350:	fb 01       	movw	r30, r22
- 352:	e2 0f       	add	r30, r18
- 354:	f1 1d       	adc	r31, r1
- 356:	90 5d       	subi	r25, 0xD0	; 208
- 358:	90 83       	st	Z, r25
-		n = n /10;
- 35a:	83 2f       	mov	r24, r19
- 35c:	86 95       	lsr	r24
- 35e:	86 95       	lsr	r24
- 360:	86 95       	lsr	r24
-		i++;
- 362:	2f 5f       	subi	r18, 0xFF	; 255
-#include <avr/io.h>
-void int_to_string(uint8_t n, char *str)
-{
-	unsigned char i = 0;
-	while (n!= 0)
- 364:	81 11       	cpse	r24, r1
- 366:	e5 cf       	rjmp	.-54     	; 0x332 <int_to_string+0x4>
-		int digit = n%10;
-		str[i] = digit + '0';
-		n = n /10;
-		i++;
+		result = -result;
 	}
-	str[i] = '\0';
- 368:	fb 01       	movw	r30, r22
- 36a:	e2 0f       	add	r30, r18
- 36c:	f1 1d       	adc	r31, r1
- 36e:	10 82       	st	Z, r1
+	return result;
+}
+void reverse(char* str) {
+ 32e:	ac 01       	movw	r20, r24
 	unsigned char start = 0;
-	unsigned char end = i - 1;
- 370:	8f ef       	ldi	r24, 0xFF	; 255
- 372:	82 0f       	add	r24, r18
-		str[i] = digit + '0';
-		n = n /10;
-		i++;
+	unsigned char end1 = 0;
+ 330:	90 e0       	ldi	r25, 0x00	; 0
+	while(str[end1] != '\0')
+ 332:	01 c0       	rjmp	.+2      	; 0x336 <reverse+0x8>
+	{
+		end1++;
+ 334:	9f 5f       	subi	r25, 0xFF	; 255
+	return result;
+}
+void reverse(char* str) {
+	unsigned char start = 0;
+	unsigned char end1 = 0;
+	while(str[end1] != '\0')
+ 336:	fa 01       	movw	r30, r20
+ 338:	e9 0f       	add	r30, r25
+ 33a:	f1 1d       	adc	r31, r1
+ 33c:	80 81       	ld	r24, Z
+ 33e:	81 11       	cpse	r24, r1
+ 340:	f9 cf       	rjmp	.-14     	; 0x334 <reverse+0x6>
+	{
+		end1++;
 	}
-	str[i] = '\0';
+	end1--;
+ 342:	91 50       	subi	r25, 0x01	; 1
+		result = -result;
+	}
+	return result;
+}
+void reverse(char* str) {
 	unsigned char start = 0;
- 374:	90 e0       	ldi	r25, 0x00	; 0
-	unsigned char end = i - 1;
-	while (start < end) {
- 376:	0c c0       	rjmp	.+24     	; 0x390 <int_to_string+0x62>
+ 344:	20 e0       	ldi	r18, 0x00	; 0
+	while(str[end1] != '\0')
+	{
+		end1++;
+	}
+	end1--;
+	while (start<end1) {
+ 346:	0c c0       	rjmp	.+24     	; 0x360 <reverse+0x32>
 		char temp = str[start];
- 378:	db 01       	movw	r26, r22
- 37a:	a9 0f       	add	r26, r25
- 37c:	b1 1d       	adc	r27, r1
- 37e:	2c 91       	ld	r18, X
-		str[start] = str[end];
- 380:	fb 01       	movw	r30, r22
- 382:	e8 0f       	add	r30, r24
- 384:	f1 1d       	adc	r31, r1
- 386:	30 81       	ld	r19, Z
- 388:	3c 93       	st	X, r19
-		str[end] = temp;
- 38a:	20 83       	st	Z, r18
+ 348:	da 01       	movw	r26, r20
+ 34a:	a2 0f       	add	r26, r18
+ 34c:	b1 1d       	adc	r27, r1
+ 34e:	8c 91       	ld	r24, X
+		str[start] = str[end1];
+ 350:	fa 01       	movw	r30, r20
+ 352:	e9 0f       	add	r30, r25
+ 354:	f1 1d       	adc	r31, r1
+ 356:	30 81       	ld	r19, Z
+ 358:	3c 93       	st	X, r19
+		str[end1] = temp;
+ 35a:	80 83       	st	Z, r24
 		start++;
- 38c:	9f 5f       	subi	r25, 0xFF	; 255
-		end--;
- 38e:	81 50       	subi	r24, 0x01	; 1
-		i++;
+ 35c:	2f 5f       	subi	r18, 0xFF	; 255
+		end1--;
+ 35e:	91 50       	subi	r25, 0x01	; 1
+	while(str[end1] != '\0')
+	{
+		end1++;
 	}
-	str[i] = '\0';
-	unsigned char start = 0;
-	unsigned char end = i - 1;
-	while (start < end) {
- 390:	98 17       	cp	r25, r24
- 392:	90 f3       	brcs	.-28     	; 0x378 <int_to_string+0x4a>
-		str[start] = str[end];
-		str[end] = temp;
+	end1--;
+	while (start<end1) {
+ 360:	29 17       	cp	r18, r25
+ 362:	90 f3       	brcs	.-28     	; 0x348 <reverse+0x1a>
+		str[start] = str[end1];
+		str[end1] = temp;
 		start++;
-		end--;
+		end1--;
 	}
 }
- 394:	08 95       	ret
+ 364:	08 95       	ret
 
-00000396 <main>:
+00000366 <int_to_string>:
+void int_to_string(int32_t num, char *str)
+{
+ 366:	ff 92       	push	r15
+ 368:	0f 93       	push	r16
+ 36a:	1f 93       	push	r17
+ 36c:	cf 93       	push	r28
+ 36e:	df 93       	push	r29
+ 370:	ea 01       	movw	r28, r20
+	int isNegative = 0;
+	unsigned char i = 0;
+	if(num < 0)
+ 372:	99 23       	and	r25, r25
+ 374:	54 f4       	brge	.+20     	; 0x38a <int_to_string+0x24>
+	{
+		isNegative = 1;
+		num = -num;
+ 376:	90 95       	com	r25
+ 378:	80 95       	com	r24
+ 37a:	70 95       	com	r23
+ 37c:	61 95       	neg	r22
+ 37e:	7f 4f       	sbci	r23, 0xFF	; 255
+ 380:	8f 4f       	sbci	r24, 0xFF	; 255
+ 382:	9f 4f       	sbci	r25, 0xFF	; 255
+{
+	int isNegative = 0;
+	unsigned char i = 0;
+	if(num < 0)
+	{
+		isNegative = 1;
+ 384:	01 e0       	ldi	r16, 0x01	; 1
+ 386:	10 e0       	ldi	r17, 0x00	; 0
+ 388:	02 c0       	rjmp	.+4      	; 0x38e <int_to_string+0x28>
+		end1--;
+	}
+}
+void int_to_string(int32_t num, char *str)
+{
+	int isNegative = 0;
+ 38a:	00 e0       	ldi	r16, 0x00	; 0
+ 38c:	10 e0       	ldi	r17, 0x00	; 0
+	if(num < 0)
+	{
+		isNegative = 1;
+		num = -num;
+	}
+	if(num == 0)
+ 38e:	61 15       	cp	r22, r1
+ 390:	71 05       	cpc	r23, r1
+ 392:	81 05       	cpc	r24, r1
+ 394:	91 05       	cpc	r25, r1
+ 396:	b1 f4       	brne	.+44     	; 0x3c4 <int_to_string+0x5e>
+	{
+		str[i++] = '0';
+ 398:	80 e3       	ldi	r24, 0x30	; 48
+ 39a:	88 83       	st	Y, r24
+ 39c:	ff 24       	eor	r15, r15
+ 39e:	f3 94       	inc	r15
+ 3a0:	17 c0       	rjmp	.+46     	; 0x3d0 <int_to_string+0x6a>
+	}
+	else
+	{
+		while (num != 0)
+		{
+			int32_t rem = (int32_t)num % 10;
+ 3a2:	2a e0       	ldi	r18, 0x0A	; 10
+ 3a4:	30 e0       	ldi	r19, 0x00	; 0
+ 3a6:	40 e0       	ldi	r20, 0x00	; 0
+ 3a8:	50 e0       	ldi	r21, 0x00	; 0
+ 3aa:	0e 94 4a 02 	call	0x494	; 0x494 <__divmodsi4>
+			str[i++] = rem + '0';
+ 3ae:	fe 01       	movw	r30, r28
+ 3b0:	ef 0d       	add	r30, r15
+ 3b2:	f1 1d       	adc	r31, r1
+ 3b4:	60 5d       	subi	r22, 0xD0	; 208
+ 3b6:	60 83       	st	Z, r22
+			num = num / 10;
+ 3b8:	62 2f       	mov	r22, r18
+ 3ba:	73 2f       	mov	r23, r19
+ 3bc:	84 2f       	mov	r24, r20
+ 3be:	95 2f       	mov	r25, r21
+	else
+	{
+		while (num != 0)
+		{
+			int32_t rem = (int32_t)num % 10;
+			str[i++] = rem + '0';
+ 3c0:	f3 94       	inc	r15
+ 3c2:	01 c0       	rjmp	.+2      	; 0x3c6 <int_to_string+0x60>
+ 3c4:	f1 2c       	mov	r15, r1
+	{
+		str[i++] = '0';
+	}
+	else
+	{
+		while (num != 0)
+ 3c6:	61 15       	cp	r22, r1
+ 3c8:	71 05       	cpc	r23, r1
+ 3ca:	81 05       	cpc	r24, r1
+ 3cc:	91 05       	cpc	r25, r1
+ 3ce:	49 f7       	brne	.-46     	; 0x3a2 <int_to_string+0x3c>
+			int32_t rem = (int32_t)num % 10;
+			str[i++] = rem + '0';
+			num = num / 10;
+		}
+	}
+	if(isNegative)
+ 3d0:	01 2b       	or	r16, r17
+ 3d2:	29 f0       	breq	.+10     	; 0x3de <int_to_string+0x78>
+	str[i++] = '-';
+ 3d4:	fe 01       	movw	r30, r28
+ 3d6:	ef 0d       	add	r30, r15
+ 3d8:	f1 1d       	adc	r31, r1
+ 3da:	8d e2       	ldi	r24, 0x2D	; 45
+ 3dc:	80 83       	st	Z, r24
+	reverse(str);
+ 3de:	ce 01       	movw	r24, r28
+ 3e0:	0e 94 97 01 	call	0x32e	; 0x32e <reverse>
+}
+ 3e4:	df 91       	pop	r29
+ 3e6:	cf 91       	pop	r28
+ 3e8:	1f 91       	pop	r17
+ 3ea:	0f 91       	pop	r16
+ 3ec:	ff 90       	pop	r15
+ 3ee:	08 95       	ret
+
+000003f0 <main>:
 #include <avr/io.h>
 #include <LCD.h>
 #include <mystr.h>
 #include "DS18B20.h"
 int main(void)
 {	
- 396:	cf 93       	push	r28
- 398:	df 93       	push	r29
- 39a:	cd b7       	in	r28, 0x3d	; 61
- 39c:	de b7       	in	r29, 0x3e	; 62
- 39e:	2b 97       	sbiw	r28, 0x0b	; 11
- 3a0:	0f b6       	in	r0, 0x3f	; 63
- 3a2:	f8 94       	cli
- 3a4:	de bf       	out	0x3e, r29	; 62
- 3a6:	0f be       	out	0x3f, r0	; 63
- 3a8:	cd bf       	out	0x3d, r28	; 61
+ 3f0:	cf 93       	push	r28
+ 3f2:	df 93       	push	r29
+ 3f4:	cd b7       	in	r28, 0x3d	; 61
+ 3f6:	de b7       	in	r29, 0x3e	; 62
+ 3f8:	2b 97       	sbiw	r28, 0x0b	; 11
+ 3fa:	0f b6       	in	r0, 0x3f	; 63
+ 3fc:	f8 94       	cli
+ 3fe:	de bf       	out	0x3e, r29	; 62
+ 400:	0f be       	out	0x3f, r0	; 63
+ 402:	cd bf       	out	0x3d, r28	; 61
 	LCD_init();
- 3aa:	0e 94 81 00 	call	0x102	; 0x102 <LCD_init>
+ 404:	0e 94 81 00 	call	0x102	; 0x102 <LCD_init>
     while (1) 
     {
 		LCD_print("Temp: ");
- 3ae:	80 e6       	ldi	r24, 0x60	; 96
- 3b0:	90 e0       	ldi	r25, 0x00	; 0
- 3b2:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
+ 408:	80 e6       	ldi	r24, 0x60	; 96
+ 40a:	90 e0       	ldi	r25, 0x00	; 0
+ 40c:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
 		char int_str[7];
 		char dcm_str[4];
 		int_part(int_str);
- 3b6:	ce 01       	movw	r24, r28
- 3b8:	01 96       	adiw	r24, 0x01	; 1
- 3ba:	0e 94 58 01 	call	0x2b0	; 0x2b0 <int_part>
+ 410:	ce 01       	movw	r24, r28
+ 412:	01 96       	adiw	r24, 0x01	; 1
+ 414:	0e 94 58 01 	call	0x2b0	; 0x2b0 <int_part>
 		decimal_part(dcm_str);
- 3be:	ce 01       	movw	r24, r28
- 3c0:	08 96       	adiw	r24, 0x08	; 8
- 3c2:	0e 94 6b 01 	call	0x2d6	; 0x2d6 <decimal_part>
+ 418:	ce 01       	movw	r24, r28
+ 41a:	08 96       	adiw	r24, 0x08	; 8
+ 41c:	0e 94 6f 01 	call	0x2de	; 0x2de <decimal_part>
 		LCD_print(int_str);
- 3c6:	ce 01       	movw	r24, r28
- 3c8:	01 96       	adiw	r24, 0x01	; 1
- 3ca:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
+ 420:	ce 01       	movw	r24, r28
+ 422:	01 96       	adiw	r24, 0x01	; 1
+ 424:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
 		LCD_print(".");
- 3ce:	87 e6       	ldi	r24, 0x67	; 103
- 3d0:	90 e0       	ldi	r25, 0x00	; 0
- 3d2:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
+ 428:	87 e6       	ldi	r24, 0x67	; 103
+ 42a:	90 e0       	ldi	r25, 0x00	; 0
+ 42c:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
 		LCD_print(dcm_str);
- 3d6:	ce 01       	movw	r24, r28
- 3d8:	08 96       	adiw	r24, 0x08	; 8
- 3da:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
+ 430:	ce 01       	movw	r24, r28
+ 432:	08 96       	adiw	r24, 0x08	; 8
+ 434:	0e 94 a3 00 	call	0x146	; 0x146 <LCD_print>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
- 3de:	2f ef       	ldi	r18, 0xFF	; 255
- 3e0:	81 ee       	ldi	r24, 0xE1	; 225
- 3e2:	94 e0       	ldi	r25, 0x04	; 4
- 3e4:	21 50       	subi	r18, 0x01	; 1
- 3e6:	80 40       	sbci	r24, 0x00	; 0
- 3e8:	90 40       	sbci	r25, 0x00	; 0
- 3ea:	e1 f7       	brne	.-8      	; 0x3e4 <main+0x4e>
- 3ec:	00 c0       	rjmp	.+0      	; 0x3ee <main+0x58>
- 3ee:	00 00       	nop
+ 438:	2f ef       	ldi	r18, 0xFF	; 255
+ 43a:	81 ee       	ldi	r24, 0xE1	; 225
+ 43c:	94 e0       	ldi	r25, 0x04	; 4
+ 43e:	21 50       	subi	r18, 0x01	; 1
+ 440:	80 40       	sbci	r24, 0x00	; 0
+ 442:	90 40       	sbci	r25, 0x00	; 0
+ 444:	e1 f7       	brne	.-8      	; 0x43e <__DATA_REGION_LENGTH__+0x3e>
+ 446:	00 c0       	rjmp	.+0      	; 0x448 <__DATA_REGION_LENGTH__+0x48>
+ 448:	00 00       	nop
 		_delay_ms(200);
 		LCD_clear();
- 3f0:	0e 94 99 00 	call	0x132	; 0x132 <LCD_clear>
- 3f4:	dc cf       	rjmp	.-72     	; 0x3ae <main+0x18>
+ 44a:	0e 94 99 00 	call	0x132	; 0x132 <LCD_clear>
+ 44e:	dc cf       	rjmp	.-72     	; 0x408 <__DATA_REGION_LENGTH__+0x8>
 
-000003f6 <_exit>:
- 3f6:	f8 94       	cli
+00000450 <__udivmodsi4>:
+ 450:	a1 e2       	ldi	r26, 0x21	; 33
+ 452:	1a 2e       	mov	r1, r26
+ 454:	aa 1b       	sub	r26, r26
+ 456:	bb 1b       	sub	r27, r27
+ 458:	fd 01       	movw	r30, r26
+ 45a:	0d c0       	rjmp	.+26     	; 0x476 <__udivmodsi4_ep>
 
-000003f8 <__stop_program>:
- 3f8:	ff cf       	rjmp	.-2      	; 0x3f8 <__stop_program>
+0000045c <__udivmodsi4_loop>:
+ 45c:	aa 1f       	adc	r26, r26
+ 45e:	bb 1f       	adc	r27, r27
+ 460:	ee 1f       	adc	r30, r30
+ 462:	ff 1f       	adc	r31, r31
+ 464:	a2 17       	cp	r26, r18
+ 466:	b3 07       	cpc	r27, r19
+ 468:	e4 07       	cpc	r30, r20
+ 46a:	f5 07       	cpc	r31, r21
+ 46c:	20 f0       	brcs	.+8      	; 0x476 <__udivmodsi4_ep>
+ 46e:	a2 1b       	sub	r26, r18
+ 470:	b3 0b       	sbc	r27, r19
+ 472:	e4 0b       	sbc	r30, r20
+ 474:	f5 0b       	sbc	r31, r21
+
+00000476 <__udivmodsi4_ep>:
+ 476:	66 1f       	adc	r22, r22
+ 478:	77 1f       	adc	r23, r23
+ 47a:	88 1f       	adc	r24, r24
+ 47c:	99 1f       	adc	r25, r25
+ 47e:	1a 94       	dec	r1
+ 480:	69 f7       	brne	.-38     	; 0x45c <__udivmodsi4_loop>
+ 482:	60 95       	com	r22
+ 484:	70 95       	com	r23
+ 486:	80 95       	com	r24
+ 488:	90 95       	com	r25
+ 48a:	9b 01       	movw	r18, r22
+ 48c:	ac 01       	movw	r20, r24
+ 48e:	bd 01       	movw	r22, r26
+ 490:	cf 01       	movw	r24, r30
+ 492:	08 95       	ret
+
+00000494 <__divmodsi4>:
+ 494:	05 2e       	mov	r0, r21
+ 496:	97 fb       	bst	r25, 7
+ 498:	1e f4       	brtc	.+6      	; 0x4a0 <__divmodsi4+0xc>
+ 49a:	00 94       	com	r0
+ 49c:	0e 94 61 02 	call	0x4c2	; 0x4c2 <__negsi2>
+ 4a0:	57 fd       	sbrc	r21, 7
+ 4a2:	07 d0       	rcall	.+14     	; 0x4b2 <__divmodsi4_neg2>
+ 4a4:	0e 94 28 02 	call	0x450	; 0x450 <__udivmodsi4>
+ 4a8:	07 fc       	sbrc	r0, 7
+ 4aa:	03 d0       	rcall	.+6      	; 0x4b2 <__divmodsi4_neg2>
+ 4ac:	4e f4       	brtc	.+18     	; 0x4c0 <__divmodsi4_exit>
+ 4ae:	0c 94 61 02 	jmp	0x4c2	; 0x4c2 <__negsi2>
+
+000004b2 <__divmodsi4_neg2>:
+ 4b2:	50 95       	com	r21
+ 4b4:	40 95       	com	r20
+ 4b6:	30 95       	com	r19
+ 4b8:	21 95       	neg	r18
+ 4ba:	3f 4f       	sbci	r19, 0xFF	; 255
+ 4bc:	4f 4f       	sbci	r20, 0xFF	; 255
+ 4be:	5f 4f       	sbci	r21, 0xFF	; 255
+
+000004c0 <__divmodsi4_exit>:
+ 4c0:	08 95       	ret
+
+000004c2 <__negsi2>:
+ 4c2:	90 95       	com	r25
+ 4c4:	80 95       	com	r24
+ 4c6:	70 95       	com	r23
+ 4c8:	61 95       	neg	r22
+ 4ca:	7f 4f       	sbci	r23, 0xFF	; 255
+ 4cc:	8f 4f       	sbci	r24, 0xFF	; 255
+ 4ce:	9f 4f       	sbci	r25, 0xFF	; 255
+ 4d0:	08 95       	ret
+
+000004d2 <_exit>:
+ 4d2:	f8 94       	cli
+
+000004d4 <__stop_program>:
+ 4d4:	ff cf       	rjmp	.-2      	; 0x4d4 <__stop_program>
