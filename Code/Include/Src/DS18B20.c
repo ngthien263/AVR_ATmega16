@@ -1,5 +1,8 @@
 #include "DS18B20.h"
 #include <mystr.h>
+
+extern float temp;
+
 uint8_t reset()
 {
 	uint8_t re;
@@ -72,7 +75,7 @@ uint8_t readbyte()
 	return n;
 }
 
-int readTemp()
+float readTemp()
 {
 	unsigned char iTempL;
 	unsigned char iTempH;
@@ -84,22 +87,26 @@ int readTemp()
 	reset();
 	writebyte(SKIPROM);
 	writebyte(RSCRATCHPAD);
-	
 	iTempL = readbyte();
 	iTempH = readbyte() ;
-	int temp = (iTempH << 8) | iTempL;
-	return temp;
+	ftemp = ( ( iTempH << 8 ) + iTempL ) * 0.0625;
+	return ftemp;
 }
 
-void int_part(char* intp_str)
+void handleLED(float wTemp)
 {
-	uint8_t intp = readTemp()>>4;
-	int_to_string(intp, intp_str);
-}
+	PORTD &= ~((1<<LED_R) | (1<<LED_G) | (1<<LED_Y)); 
 
-void decimal_part(char* dcmp_str)
-{
-	uint8_t dcmp = readTemp() & 0x000F;
-	dcmp = dcmp * 10/16;
-	int_to_string(dcmp, dcmp_str);
+	if(temp < wTemp - 0.5)
+	{
+		PORTD |= (1<<LED_R); 
+	}
+	else if(temp > wTemp + 0.5)
+	{
+		PORTD |= (1<<LED_G); 
+	}
+	else if((wTemp - 0.5 < temp) && (temp < wTemp + 0.5))
+	{
+		PORTD |= (1<<LED_Y); 
+	}
 }

@@ -3,21 +3,21 @@
 #include <LCD.h>
 #include <mystr.h>
 #include "DS18B20.h"
+float temp;
+char temp_str[10];
+float wTemp = 24.1;
 int main(void)
 {	
 	LCD_init();
     while (1) 
     {
-		LCD_print("Temp: ");
-		char int_str[7];
-		char dcm_str[4];
-		int_part(int_str);
-		decimal_part(dcm_str);
-		LCD_print(int_str);
-		LCD_print(".");
-		LCD_print(dcm_str);
-		_delay_ms(200);
+		temp = readTemp();
+		clearCharArray(temp_str);
+		float_to_string(temp, temp_str);
 		LCD_clear();
+		LCD_print("Temp: ");
+		LCD_print(temp_str);
+		handleLED(wTemp);
     }
 }
 

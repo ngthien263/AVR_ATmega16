@@ -9,12 +9,9 @@
 #define RSCRATCHPAD 0xBE
 #define WSCRATCHPAD 0x4E
 #define SKIPROM 0xCC
-uint8_t reset(void);
-void writebit(unsigned char bit);
-uint8_t readbit(void);
-void writebyte(unsigned char byte);
-uint8_t readbyte(void);
-int readTemp(void);
-void int_part(char *intp_str);
-void decimal_part(char *dcmp_str);
+#define LED_R 3
+#define LED_Y 4
+#define LED_G 5
+float readTemp();
+void handleLED(float wTemp);
 #endif // DS18B20_H
