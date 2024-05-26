@@ -23,7 +23,6 @@ void LCD_data(unsigned char data) {
 }
 
 void LCD_init() {
-
 	LCD_DATA_DDR = 0xFF; // output
 	LCD_CONTROL_DDR |= (1 << LCD_RS) | (1 << LCD_RW) | (1 << LCD_E);
 	_delay_ms(1);

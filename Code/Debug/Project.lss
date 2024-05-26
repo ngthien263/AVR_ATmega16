@@ -980,7 +980,7 @@ int main(void)
  548:	84 b3       	in	r24, 0x14	; 20
  54a:	87 7c       	andi	r24, 0xC7	; 199
  54c:	84 bb       	out	0x14, r24	; 20
-	
+
     while (1) 
     {
 		temp = readTemp();

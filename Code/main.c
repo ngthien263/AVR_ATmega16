@@ -10,7 +10,7 @@ int main(void)
 {	
 	LCD_init();
 	LED_CONTROL_DDR &= ~((1<<LED_R) | (1<<LED_G) | (1<<LED_Y));
-	
+
     while (1) 
     {
 		temp = readTemp();
